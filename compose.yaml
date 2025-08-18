@@ -1,0 +1,12 @@
+name: Spender-backend
+
+services:
+  postgres:
+    image: postgres:17.2-alpine3.21
+    restart: unless-stopped
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_USER=franck
+      - POSTGRES_PASSWORD=31072003Fr@
+      - POSTGRES_DB=spender_db

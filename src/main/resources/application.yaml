@@ -1,0 +1,24 @@
+application:
+  database:
+    url: jdbc:postgresql://localhost:5434/spender_db
+    username: franck
+    password: 31072003Fr@
+  cors:
+    allowed-origins: http://localhost:4200, https://localhost:4200, http://10.0.2.2:8080,http://localhost:8080,http://192.168.1.100:8080
+
+  security:
+    jwt:
+      secret: cvGqN+rlAiQNfGYDISZSKPmzpq6QWEzB0sHUwW/RJzt//qKgusA5WDxrAPKTNg8pWOg1+BMnu3Z7BzzdDsWd+w==
+      token-duration: 10m
+
+spring:
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        generate_statistics: true
+        default_schema: public
+    show-sql: true
