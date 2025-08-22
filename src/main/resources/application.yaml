@@ -1,25 +1,87 @@
+## - application specifics configs will be used to externalize configurations
 application:
   base-url: https://localhost:8080
+  info:
+    name: @project.name@
+    version: @project.version@
   database:
-    url: jdbc:postgresql://localhost:5434/spender_db
-    username: franck
-    password: 31072003Fr@
-  cors:
-    allowed-origins: http://localhost:4200, https://localhost:4200, http://10.0.2.2:8080,http://localhost:8080,http://192.168.1.100:8080
-
+    url: ${APP_DATABASE_URL}
+    username: ${APP_DATABASE_USERNAME}
+    password: ${APP_DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    retry:
+      back-off-min-duration: 500ms
+      back-off-max-duration: 5000ms
+      back-off-multiplier: 2
+      max-attempts: 3
   security:
     jwt:
-      secret: cvGqN+rlAiQNfGYDISZSKPmzpq6QWEzB0sHUwW/RJzt//qKgusA5WDxrAPKTNg8pWOg1+BMnu3Z7BzzdDsWd+w==
+      secret: ''
       token-duration: 10m
+      refresh-token-duration: 60m
 
+## - spring specifics configs
 spring:
+  application:
+    name: ${application.info.name}
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: deferred
+  datasource:
+    driver-class-name: ${application.database.driver-class-name}
+    username: ${application.database.username}
+    password: ${application.database.password}
+    url: ${application.database.url}
+    hikari:
+      pool-name: SpenderHikariPool
+      auto-commit: false
   jpa:
-    generate-ddl: true
+    show-sql: false
+    generate-ddl: false
+    open-in-view: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
+      naming:
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     properties:
       hibernate:
+        connection:
+          provider_disables_autocommit: true
         format_sql: true
-        generate_statistics: true
-        default_schema: public
-    show-sql: true
+        generate_statistics: false
+        jdbc:
+          batch_size: 25
+          time_zone: UTC
+        order_updates: true
+        order_inserts: true
+        query:
+          fail_on_pagination_over_collection_fetch: true
+          in_clause_parameter_padding: true
+        default_schema: main
+  liquibase:
+    change-log: classpath:/migration/changelogs-master.xml
+    default-schema: main
+    parameters:
+      superuserPassword: ${application.superuserPassword}
+server:
+  shutdown: graceful
+  compression:
+    enabled: true
+    min-response-size: 1024
+
+management:
+  endpoints:
+    jmx:
+      exposure:
+        include: '*'
+    web:
+      base-path: '/mgmt'
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  server:
+    port: 9090
