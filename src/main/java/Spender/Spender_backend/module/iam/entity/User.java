@@ -29,6 +29,12 @@ public class User extends AbstractEntity {
   @Column(name = "password", nullable = false)
   private String password;
 
+  @Column(name = "email", unique = true)
+  private String email;
+
+  @Column(name = "phone_number", unique = true)
+  private String phoneNumber;
+
   @Builder.Default
   @Column(name = "enabled", nullable = false)
   private boolean enabled = true;
@@ -54,6 +60,16 @@ public class User extends AbstractEntity {
     return this;
   }
 
+  public User email(String email) {
+    this.email = email;
+    return this;
+  }
+
+  public User phoneNumber(String phoneNumber) {
+    this.phoneNumber = phoneNumber;
+    return this;
+  }
+
   public boolean isDisabled() {
     return !this.enabled;
   }
@@ -71,7 +87,12 @@ public class User extends AbstractEntity {
     if (this == o) return true;
     if (!(o instanceof User that)) return false;
 
-    return enabled == that.enabled && Objects.equals(id, that.id) && Objects.equals(username, that.username) && Objects.equals(password, that.password);
+    return enabled == that.enabled
+      && Objects.equals(id, that.id)
+      && Objects.equals(username, that.username)
+      && Objects.equals(password, that.password)
+      && Objects.equals(email, that.email)
+      && Objects.equals(phoneNumber, that.phoneNumber);
   }
 
   @Override
@@ -79,6 +100,8 @@ public class User extends AbstractEntity {
     int result = Objects.hashCode(id);
     result = 31 * result + Objects.hashCode(username);
     result = 31 * result + Objects.hashCode(password);
+    result = 31 * result + Objects.hashCode(email);
+    result = 31 * result + Objects.hashCode(phoneNumber);
     result = 31 * result + Boolean.hashCode(enabled);
     return result;
   }
@@ -88,6 +111,8 @@ public class User extends AbstractEntity {
     return "User{" +
       "id=" + id +
       ", username='" + username + '\'' +
+      ", email='" + email + '\'' +
+      ", phoneNumber='" + phoneNumber + '\'' +
       ", enabled=" + enabled +
       '}';
   }

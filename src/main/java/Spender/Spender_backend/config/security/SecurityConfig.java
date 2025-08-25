@@ -32,7 +32,13 @@ import org.springframework.web.cors.CorsConfigurationSource;
 public class SecurityConfig {
 
   public static final String[] PUBLIC_URLS = {
-    "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/actuator/**", "/mgmt/**", "/iam/auth/**"
+    "/v3/api-docs/**",
+    "/swagger-ui/**",
+    "/swagger-ui.html",
+    "/actuator/**",
+    "/mgmt/**",
+    "/iam/auth/**",
+    "/iam/user/**",
   };
 
   private final CorsConfigurationSource corsConfigurationSource;

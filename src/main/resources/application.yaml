@@ -34,7 +34,7 @@ spring:
     password: ${application.database.password}
     url: ${application.database.url}
     hikari:
-      pool-name: SpenderHikariPool
+      pool-name: UhaiCareHikariPool
       auto-commit: false
   jpa:
     show-sql: false

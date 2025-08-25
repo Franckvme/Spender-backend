@@ -1,0 +1,10 @@
+###SignUp
+POST http://localhost:8080/iam/user/signup
+Content-Type: application/json
+
+{
+  "username": "ADE",
+  "password": "user-password",
+  "email": null,
+  "phoneNumber": "+1554860145"
+}
